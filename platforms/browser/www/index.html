@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<!--
+    Copyright (c) 2012-2016 Adobe Systems Incorporated. All rights reserved.
+
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+<script>
+    
+    class Coin{
+        constructor(location,color){
+            this.coinlocation=location;
+            this.coincolor=color;
+        }
+        
+    }
+    
+</script>
+
+
+<style>
+.blackdot {
+  height: 25px;
+  width: 25px;
+  background-color: yellow;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.whitedot {
+  height: 25px;
+  width: 25px;
+  background-color: white;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+</style>
+ 
+<body>
+    
+    <table border='1' id="testingtable" width="100%" height="100%">
+    </table>
+    
+    
+
+</body>
+
+</html>
+
+<script type="application/x-javascript">
+
+  var boardcolor=[["white","black","white","black","white","black","white","black"],
+                   ["black","white","black","white","black","white","black","white"],
+                   ["white","black","white","black","white","black","white","black"],
+                  ["black","white","black","white","black","white","black","white"],
+                  ["white","black","white","black","white","black","white","black"],
+                   ["black","white","black","white","black","white","black","white"],
+                   ["white","black","white","black","white","black","white","black"],
+                  ["black","white","black","white","black","white","black","white"] 
+                  ];
+
+  var selectedCoin=null;
+  
+  //var turn="black";
+                  
+  var blackcoin="<span class='blackdot'></span>";                
+  var whitecoin="<span class='whitedot'></span>";
+  
+                  
+ var testingtablestring="";
+ 
+ var counter=1;
+ 
+ var blackcoinlocations=[2,4,6,8,9,11,13,15,18,20,22,24];
+ var whitecoinlocations=[41,43,45,47,50,52,54,56,57,59,61,63];
+ var validlocations=[];
+ var pointLocations=[];
+ 
+ var coinsArray=[];
+ 
+  for (row=0;row<8;row++) {
+    testingtablestring+="<tr>";
+   
+    for (col=0;col<8;col++) {
+      columnstring="<td  bgcolor='"+boardcolor[row][col]+"' style='text-align:center' height='50px' width='30px' id='id"+counter+"' onClick=javascript:moveCoin("+counter+",'id"+counter+"');>";
+      
+        whitecoinlocations.forEach(function(value){
+        if (counter==value) {
+            
+            // Adding whitecoin to the coin Array
+            coin=new Coin(counter,"white");
+            coinsArray.push(coin);
+            
+        
+            columnstring+=whitecoin+"</td>";
+        }
+        }); 
+      
+        blackcoinlocations.forEach(function(value){
+        if (counter==value) {
+            
+            // Adding blackcoin to the coin Array
+            coin=new Coin(counter,"black");
+            coinsArray.push(coin);
+            
+            columnstring+=blackcoin+"</td>";
+        }
+        }); 
+      
+      
+      testingtablestring+=columnstring;
+    
+     counter++;
+    }
+    testingtablestring+="</tr>";
+    
+    //code
+  }
+  
+  document.getElementById("testingtable").innerHTML=testingtablestring;
+  
+  
+</script>
+
+<script>
+    
+    function moveCoin(location,id) {
+        //alert("moveCoin" + id);
+        if (selectedCoin!=null && isInArray(location,validlocations) ) {
+            
+            if (isLocationEmpty(location)) {
+            
+                selectedcoinlocation=selectedCoin.coinlocation;
+                    
+                    if (isPointLocation(location)) {
+                    switch (location) {
+                        case selectedcoinlocation+14:
+                            console.log("point with +7 ");
+                            removeCoin(selectedcoinlocation+7);
+                            removecoinlocation=selectedcoinlocation+7;
+                            document.getElementById("id"+removecoinlocation).innerHTML="&nbsp";
+                            break;
+                        case selectedcoinlocation+18:
+                            console.log("point with +9");
+                            removeCoin(selectedcoinlocation+9);
+                            removecoinlocation=selectedcoinlocation+9;
+                            document.getElementById("id"+removecoinlocation).innerHTML="&nbsp";
+                            break;
+                        case selectedcoinlocation-14:
+                            console.log("point with -7");
+                            removeCoin(selectedcoinlocation-7);
+                            removecoinlocation=selectedcoinlocation-7;
+                            document.getElementById("id"+removecoinlocation).innerHTML="&nbsp";
+                            break;
+                        case selectedcoinlocation-18:
+                            console.log("point with -9");
+                            removeCoin(selectedcoinlocation-9);
+                            removecoinlocation=selectedcoinlocation-9;
+                            document.getElementById("id"+removecoinlocation).innerHTML="&nbsp";
+                            break;
+                    }
+                }
+ 
+                // change location of the selected coin
+                coinsArray.forEach(function(value){
+                
+                
+                if (value.coinlocation==selectedcoinlocation) {
+                    console.log("Selected coin location changed");
+                    value.coinlocation=location;
+                    selectedCoin=null;
+                }
+                
+    
+                });
+                console.log(document.getElementById(tempid).innerHTML);
+                document.getElementById(id).innerHTML=document.getElementById(tempid).innerHTML;
+                document.getElementById(tempid).style.backgroundColor="black";
+                document.getElementById(tempid).innerHTML="";
+                tempid="";
+            }
+        }else{
+            console.log("Coin is not selected");
+            coinsArray.forEach(function(value){
+                
+                if (value.coinlocation==location) {
+                    
+                    selectedCoin=value;
+                    validateLocation(location);
+                    tempid=id;
+                    document.getElementById(id).style.backgroundColor="red";
+                    
+                }
+                
+                });
+        }
+        
+    }
+    
+    function removeCoin(coinlocation) {
+        removeindex=0;
+        for (index=0;index<coinsArray.length;index++) {
+            if (coinsArray[index].coinlocation==coinlocation) {
+                removeindex=index;
+            }
+        }
+        
+        coinsArray.splice(removeindex,1);
+        printCoinsArray();
+    }
+    
+    function changeCoinLocation(coin,location) {
+        coinsArray.forEach(function(value){
+            
+            if (value.coinlocation==coin.coinlocation) {
+                value.coinlocation=location;
+            }
+            
+            });
+    }
+    
+    function isLocationEmpty(selectedcoinlocation) {
+      //checking if location is valid for the color or not
+      empty=true;
+      coinsArray.forEach(function(value){
+        //console.log(value.coinlocation);
+        if (value.coinlocation==selectedcoinlocation) {
+            
+            empty= false;
+        }
+        
+        });
+      return empty;
+      
+    }
+    
+    function printCoinsArray() {
+        printlocations="";
+        coinsArray.forEach(function(value){
+            printlocations+=value.coinlocation+",";
+            });
+        console.log(printlocations);
+    }
+    
+    // check iff the value is available in the array or not
+    function isInArray(value, array) {
+        return array.indexOf(value) > -1;
+    }
+    
+    function isPointLocation(location) {
+        return pointLocations.indexOf(location)>-1;
+    }
+    
+    //following function is called in moveLocation function for checking if the new position is valid
+
+    function validateLocation(selectedLocations) {
+        pointLocations=[];
+        pointChanceSeven=false;
+        pointChanceNine=false;
+        validlocations=[];
+        if (selectedCoin.coincolor=="black") {
+            //validlocations=[selectedLocations+7,selectedLocations+9];
+            
+            if (!isLocationEmpty(selectedLocations+7)) {
+                if (isLocationEmpty(selectedLocations+14)) {
+                    validlocations.push(selectedLocations+14);
+                    pointLocations.push(selectedLocations+14);
+                }
+            }else{
+                validlocations.push(selectedLocations+7);
+            }
+            
+            if (!isLocationEmpty(selectedLocations+9)) {
+                if (isLocationEmpty(selectedLocations+18)) {
+                    validlocations.push(selectedLocations+18);
+                    pointLocations.push(selectedLocations+18);
+                }
+            }else{
+                validlocations.push(selectedLocations+9);
+            }
+            ////////////////////////////
+        }else{
+            
+             if (!isLocationEmpty(selectedLocations-7)) {
+                if (isLocationEmpty(selectedLocations-14)) {
+                    validlocations.push(selectedLocations-14);
+                    pointLocations.push(selectedLocations-14);
+                }
+            }else{
+                validlocations.push(selectedLocations-7);
+            }
+            
+            if (!isLocationEmpty(selectedLocations-9)) {
+                if (isLocationEmpty(selectedLocations-18)) {
+                    validlocations.push(selectedLocations-18);
+                    pointLocations.push(selectedLocations-18);
+                }
+            }else{
+                validlocations.push(selectedLocations-9);
+            }
+  
+            
+            
+        }
+        validlocations.forEach(function(value){
+                console.log(value);
+                });
+
+        
+    }
+      
+    
+</script>
+
