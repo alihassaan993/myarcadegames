@@ -6,21 +6,14 @@
     <feature name="Device">
         <param name="browser-package" value="Device" />
     </feature>
-    <name>draught</name>
+    <name>Draught</name>
     <description>
-        Hello World sample application that responds to the deviceready event.
+        Arcade puzzle game for kids
     </description>
-    <author email="support@phonegap.com" href="http://phonegap.com">
-        PhoneGap Team
+    <author email="alihassaan@gmail.com" href="http://paritravel.com">
+        Maverick Khan
     </author>
     <content src="index.html" />
     <access origin="*" />
-    <allow-intent href="http://*/*" />
-    <allow-intent href="https://*/*" />
-    <allow-intent href="tel:*" />
-    <allow-intent href="sms:*" />
-    <allow-intent href="mailto:*" />
-    <allow-intent href="geo:*" />
-    <preference name="DisallowOverscroll" value="true" />
-    <preference name="android-minSdkVersion" value="14" />
+    <icon src="draught.jpg" />
 </widget>
